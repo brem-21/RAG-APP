@@ -10,6 +10,6 @@ langchain_community
 streamlit
 flask
 flask-cors
-google-generativeaipylint
+google-generativeai
 black
 pylint
