@@ -103,7 +103,7 @@ def rag_tool(user_query: str):
     retrieved_results = get_query_results(user_query)
 
     system_prompt = (
-        "You are an AI assistant with RAG capabilities. You will be given a user query and relevant retrieved documents. "
+        "You are an AI assistant with RAG capabilities. You will be given a user query and relevant retrieved documents from the Paul Graham's essay. "
         "Please generate a response based only on the provided information."
     )
 
