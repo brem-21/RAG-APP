@@ -51,3 +51,4 @@ This project is a Retrieval-Augmented Generation (RAG) chatbot that enhances AI-
 ## License
 This project is open-source and available under the MIT License.
 
+Access the app on `http://34.240.0.57:5000/home`
