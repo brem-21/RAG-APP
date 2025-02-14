@@ -57,9 +57,6 @@ print(f"Total number of splitted chunks: {len(text_splitted)}")
 text_tokens = []
 for text in text_splitted:
     text_tokens.extend(token_splitter.split_text(text))
-print(f"Total number of tokens: {len(text_tokens)}")
-
-max_token_length(text_tokens)
 
 ids = [str(uuid4()) for _ in range(len(text_tokens))]
 ids[:5]
@@ -93,10 +90,19 @@ def rag_tool(user_query: str):
     # Initialize the Gemini model
     model = genai.GenerativeModel("gemini-2.0-flash")
 
-    # Generate response
-    response = model.generate_content(full_query)
-
-    return response.text if response else "Unable to generate a response."
+    try:
+        # Generate response
+        response = model.generate_content(full_query)
+        
+        # Check if the response is valid and has text
+        if response and hasattr(response, 'text'):
+            return response.text
+        else:
+            return "Unable to generate a response: Invalid response from the model."
+    except Exception as e:
+        # Log the error for debugging
+        print(f"Error generating response: {e}")
+        return f"Unable to generate a response: {str(e)}"
 
 @app.route("/query", methods=["POST"])
 def query():
