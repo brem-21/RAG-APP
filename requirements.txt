@@ -1,0 +1,13 @@
+
+seaborn
+transformers
+langchain
+chromadb
+sentence-transformers
+requests
+openai
+langchain_community
+streamlit
+flask
+flask-cors
+google-generativeai

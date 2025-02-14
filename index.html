@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            text-align: center;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .response-container {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .source-link {
+            display: block;
+            margin-top: 5px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .source-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>ASK AND IT SHALL BE GIVEN UNTO YOU</h1>
+        <input type="text" id="queryInput" placeholder="Enter your query...">
+        <button onclick="sendQuery()">Ask</button>
+        <div id="responseContainer" class="response-container"></div>
+    </div>
+
+    <script>
+        function sendQuery() {
+            const query = document.getElementById("queryInput").value;
+            if (!query) {
+                alert("Please enter a query.");
+                return;
+            }
+
+            fetch("http://127.0.0.1:5000/query", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ query: query })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const responseContainer = document.getElementById("responseContainer");
+                responseContainer.innerHTML = `<p><strong>Response:</strong> ${data.response}</p>`;
+
+                if (data.sources.length > 0) {
+                    responseContainer.innerHTML += `<p><strong>Sources:</strong></p>`;
+                    data.sources.forEach(([text, source]) => {
+                        responseContainer.innerHTML += `<p>${text}</p>`;
+                        if (source) {
+                            responseContainer.innerHTML += `<a href="${source}" class="source-link" target="_blank">View Source</a>`;
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to fetch response.");
+            });
+        }
+    </script>
+
+</body>
+</html>
